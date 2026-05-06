@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const next = require('next');
+const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
@@ -8,7 +9,9 @@ const app = express();
 const PORT = Number.parseInt(process.env.PORT || '5000', 10);
 const isDevelopment = process.env.NODE_ENV === 'development';
 const frontendRoot = path.join(__dirname, '..', 'frontend');
-const buildOutput = path.join(__dirname, 'dist');
+const backendBuildOutput = path.join(__dirname, 'dist');
+const frontendBuildOutput = path.join(frontendRoot, 'dist');
+const buildOutput = fs.existsSync(backendBuildOutput) ? backendBuildOutput : frontendBuildOutput;
 const host = process.env.HOST || '0.0.0.0';
 const publicUrl = process.env.RENDER_EXTERNAL_URL || `http://${host}:${PORT}`;
 const nextApp = next({
